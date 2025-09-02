@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkbunker - Stay Safe</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #eee;
+    }
+    header {
+      background-color: #222;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #444;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+      color: #3eb489;
+    }
+    .search-bar {
+      margin-top: 15px;
+    }
+    .search-bar input[type="text"] {
+      padding: 10px;
+      width: 60%;
+      max-width: 400px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    .search-bar button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #3eb489;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1em;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-bar button:hover {
+      background-color: #29916b;
+    }
+    nav {
+      background-color: #1a1a1a;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #ccc;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav a:hover {
+      color: #3eb489;
+    }
+    section {
+      display: none;
+      padding: 40px 20px;
+    }
+    section.active {
+      display: block;
+    }
+    .bunker-list {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .bunker-list li {
+      background: #222;
+      margin: 12px 0;
+      padding: 16px;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px #0002;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .bunker-list img {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #333;
+    }
+    /* Chat section styles */
+    .chat-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #222;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 2px 8px #0003;
+    }
+    .chat-messages {
+      max-height: 260px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      background: #181818;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 1em;
+    }
+    .chat-message {
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #3333;
+    }
+    .chat-message:last-child {
+      border-bottom: none;
+    }
+    .chat-user {
+      font-weight: bold;
+      color: #3eb489;
+      margin-right: 8px;
+    }
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+    }
+    .chat-input-row input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      background: #181818;
+      color: #eee;
+    }
+    .chat-input-row button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 4px;
+      background: #3eb489;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .chat-input-row button:hover {
+      background-color: #29916b;
+    }
+    /* Link chat visibile */
+    .chat-link-container {
+      margin-bottom:16px;
+      text-align:center;
+    }
+    .chat-link-label {
+      font-weight:bold;
+      color:#3eb489;
+    }
+    .chat-link-input {
+      width:90%;
+      padding:8px;
+      margin-top:4px;
+      border-radius:4px;
+      border:none;
+      font-size:1em;
+      background:#181818;
+      color:#eee;
+      text-align:center;
+    }
+    .chat-link-copy-btn {
+      margin-top:8px;
+      padding:8px 18px;
+      border-radius:4px;
+      border:none;
+      background:#3eb489;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    .chat-link-copied-msg {
+      color:#3eb489;
+      font-size:0.95em;
+      margin-left:10px;
+    }
+    footer {
+      background-color: #111;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Checkbunker</h1>
+    <p>Your safety starts underground</p>
+    <div class="search-bar">
+      <input id="search-input" type="text" placeholder="Cerca nei bunker..." oninput="filtraBunker()">
+      <button onclick="filtraBunker()">Cerca</button>
+    </div>
+  </header>
+  <nav>
+    <a onclick="mostraSezione('home')">Home</a>
+    <a onclick="mostraSezione('chi-siamo')">Who are we</a>
+    <a onclick="mostraSezione('modelli')">Models</a>
+    <a onclick="mostraSezione('contatti')">Contact</a>
+    <a onclick="mostraSezione('chat')">Chat</a>
+  </nav>
+  <section id="home" class="active">
+    <h2>Welcome in Checkbunker</h2>
+    <p>Protezione avanzata per ogni emergenza. Esplora i nostri bunker altamente tecnologici e sicuri.</p>
+  </section>
+  <section id="chi-siamo">
+    <h2>Who are we</h2>
+    <p>Who We Are<br>
+    Welcome to CheckBunker, the world’s largest online community dedicated to the exploration, discovery, and review of bunkers across the globe.</p>
+    <p>Whether you're a history enthusiast, an urban explorer, or simply curious about underground structures, CheckBunker is your go-to hub for verified information, detailed reviews, and stunning photos of bunkers—from World War relics to modern-day survival shelters.</p>
+    <p>Our mission is to connect explorers, researchers, and adventurers with reliable content, interactive maps, and firsthand accounts. Every day, our global community shares insights, posts new locations, and helps preserve the memory and mystery of these hidden spaces.</p>
+    <p>Join us as we go beneath the surface—literally.</p>
+  </section>
+  <section id="modelli">
+    <h2>Our Models</h2>
+    <p>Offriamo una gamma di bunker: base, familiare, militare e luxury. Tutti personalizzabili secondo le tue esigenze.</p>
+    <ul class="bunker-list" id="bunker-list"></ul>
+  </section>
+  <section id="contatti">
+    <h2>Contact us</h2>
+    <p>Email: contact@checkbunker.com<br>Phone: +39 738 034 0719</p>
+  </section>
+  <!-- Chat Section -->
+  <section id="chat">
+    <h2>Community Chat</h2>
+    <div class="chat-container">
+      <!-- Link ben visibile per la chat -->
+      <div class="chat-link-container">
+        <label for="chat-link" class="chat-link-label">Link chat da condividere:</label><br>
+        <input id="chat-link" class="chat-link-input" type="text" readonly>
+        <button class="chat-link-copy-btn" onclick="copiaChatLink()">Copia</button>
+        <span id="copia-msg" class="chat-link-copied-msg"></span>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-user" placeholder="Your name (optional)">
+        <input type="text" id="chat-input" placeholder="Scrivi un messaggio...">
+        <button onclick="inviaMessaggio()">Invia</button>
+      </div>
+    </div>
+  </section>
+  <footer>
+    &copy; 2025 checkbunker. All safe.
+  </footer>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+  <script>
+    // Sostituisci con i TUOI parametri Firebase!
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Bunker data
+    const bunkerData = [
+      {
+        nome: "Base",
+        descrizione: "Bunker base, ideale per piccole emergenze.",
+        immagine: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        nome: "Familiare",
+        descrizione: "Bunker familiare per 4-6 persone, comfort e sicurezza.",
+        immagine: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        nome: "Militare",
+        descrizione: "Bunker militare, massima resistenza e tecnologia.",
+        immagine: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        nome: "Luxury",
+        descrizione: "Bunker luxury, design esclusivo e servizi top.",
+        immagine: "https://images.unsplash.com/photo-1465101162946-4377e57745c3?auto=format&fit=crop&w=400&q=80"
+      }
+    ];
+    function mostraSezione(id) {
+      const sezioni = document.querySelectorAll('section');
+      sezioni.forEach(sezione => sezione.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if(id === "chat") renderChat();
+    }
+    function filtraBunker() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      const bunkerList = document.getElementById('bunker-list');
+      bunkerList.innerHTML = "";
+      bunkerData
+        .filter(bunker =>
+          bunker.nome.toLowerCase().includes(query) ||
+          bunker.descrizione.toLowerCase().includes(query)
+        )
+        .forEach(bunker => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <img src="${bunker.immagine}" alt="Immagine ${bunker.nome}">
+            <div>
+              <strong>${bunker.nome}</strong><br>
+              <span>${bunker.descrizione}</span>
+            </div>
+          `;
+          bunkerList.appendChild(li);
+        });
+      if (bunkerList.children.length === 0) {
+        const li = document.createElement('li');
+        li.innerHTML = `<div>Nessun bunker trovato.</div>`;
+        bunkerList.appendChild(li);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', filtraBunker);
+
+    // CHAT - Link ben visibile
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('chat-link').value = window.location.href.split('#')[0] + "#chat";
+    });
+    function copiaChatLink() {
+      const input = document.getElementById('chat-link');
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      document.getElementById('copia-msg').innerText = "Copiato!";
+      setTimeout(()=>document.getElementById('copia-msg').innerText = "", 1500);
+    }
+
+    // CHAT - Escape HTML
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, function(m) {
+        return ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        })[m];
+      });
+    }
+
+    // CHAT - Render
+    function renderChat(messages) {
+      const chatMessagesDiv = document.getElementById('chat-messages');
+      chatMessagesDiv.innerHTML = "";
+      (messages || []).forEach(msg => {
+        const div = document.createElement('div');
+        div.classList.add('chat-message');
+        div.innerHTML = `<span class="chat-user">${msg.user ? escapeHtml(msg.user) : "Anonimo"}:</span> <span>${escapeHtml(msg.text)}</span>`;
+        chatMessagesDiv.appendChild(div);
+      });
+      chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+    }
+
+    // CHAT - Ricevi e mostra in tempo reale
+    let chatListenerSetup = false;
+    function renderChatInit() {
+      if(chatListenerSetup) return;
+      chatListenerSetup = true;
+      db.ref('chatbunker/messages').on('value', snapshot => {
+        const messages = [];
+        snapshot.forEach(child => messages.push(child.val()));
+        renderChat(messages);
+      });
+    }
+    function renderChat() { renderChatInit(); } // chiamata da mostraSezione
+
+    // CHAT - Invia messaggio
+    function inviaMessaggio() {
+      const user = document.getElementById('chat-user').value.trim();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (text === "") return;
+      db.ref('chatbunker/messages').push({
+        user: user,
+        text: text,
+        timestamp: Date.now()
+      });
+      input.value = "";
+    }
+    document.getElementById('chat-input').addEventListener('keydown', function(e){
+      if(e.key === "Enter") {
+        inviaMessaggio();
+      }
+    });
+  </script>
+</body>
+</html>
